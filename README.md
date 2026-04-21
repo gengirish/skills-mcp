@@ -35,7 +35,7 @@ Plus a resource (`skills://catalog`) exposing the full JSON index.
 | **Top domain** | AI/ML/LLM (3,923 skills) |
 | **Top repo** | antigravity-awesome-skills (4,293 skills) |
 
-Catalog is regenerated from the upstream repos and shipped inside the npm package — no network needed for search. `get_skill` and `install_skill` fetch live from GitHub.
+The catalog is built **directly from upstream GitHub repos** (no local clones needed) by `scripts/build-catalog.mjs` and shipped inside the npm package — so `search_skills` has zero network latency. `get_skill` and `install_skill` fetch live from GitHub on demand.
 
 ---
 
@@ -188,7 +188,7 @@ Each skill is automatically tagged into one or more of:
 
 `testing` · `debugging` · `security` · `devops` · `data` · `ai-ml` · `frontend` · `mobile` · `backend` · `documents` · `git-collab` · `performance` · `design` · `marketing-content` · `business-pm` · `automation` · `meta-skills` · `documentation` · `blockchain` · `other`
 
-Tagging rules live in [`scripts/build-catalog.mjs`](scripts/build-catalog.mjs) and the upstream scanner in `../skills-explorer/scripts/scan-skills.mjs`.
+Tagging rules live in [`scripts/classify.mjs`](scripts/classify.mjs) (shared by the catalog builder and the Explorer UI's adapter).
 
 ---
 
@@ -197,10 +197,14 @@ Tagging rules live in [`scripts/build-catalog.mjs`](scripts/build-catalog.mjs) a
 ```bash
 git clone https://github.com/gengirish/skills-mcp
 cd skills-mcp
-npm install            # builds catalog + compiles TS
-npm run inspect        # opens MCP Inspector to poke at tools
-node scripts/smoke-test.mjs   # JSON-RPC smoke test
+npm install
+GITHUB_TOKEN=ghp_xxx npm run build:catalog   # ~5–10 min first time
+npm run build                                 # compile TS
+npm run inspect                               # MCP Inspector
+node scripts/smoke-test.mjs                   # JSON-RPC smoke test
 ```
+
+A fine-grained PAT with public-repo read access is enough. Without it, GitHub limits unauthenticated requests to 60 req/hr — the build will still work for tiny subsets via `--only=…` but won't complete a full refresh.
 
 Project layout:
 
@@ -212,23 +216,38 @@ skills-mcp/
 │   ├── search.ts       # Fuse.js fuzzy search + filters
 │   └── fetcher.ts      # GitHub raw + API download logic
 ├── scripts/
-│   ├── build-catalog.mjs   # generates data/catalog.json
+│   ├── build-catalog.mjs   # GitHub-native catalog builder
+│   ├── classify.mjs        # shared domain classification rules
 │   ├── smoke-test.mjs      # JSON-RPC stdio smoke test
 │   └── test-install.mjs    # end-to-end install test
+├── sources.json        # declarative list of upstream repos + globs
+├── .cache/             # per-repo SHA-keyed cache (gitignored)
 ├── data/
-│   └── catalog.json    # generated, ~5 MB
+│   └── catalog.json    # generated, ~5 MB (committed)
 └── dist/               # tsc output (published)
 ```
 
 ### Refreshing the catalog
 
 ```bash
-# 1. Re-scan upstream repos
-cd ../skills-explorer && npm run scan
+# Incremental: only fetches repos whose HEAD SHA changed.
+GITHUB_TOKEN=ghp_xxx npm run build:catalog
 
-# 2. Rebuild compact catalog
-cd ../skills-mcp && npm run build:catalog
+# Full refetch (ignore .cache/):
+GITHUB_TOKEN=ghp_xxx npm run build:catalog -- --force --report
+
+# A single repo:
+npm run build:catalog -- --only=anthropic-skills
+
+# Include the giant aggregator (~227k entries; very slow):
+npm run build:catalog -- --include-registry
 ```
+
+Adding a new source: append an entry to [`sources.json`](sources.json) with `{key, owner, repo, branch, label, tier, upstream, include}`. Re-run `npm run build:catalog` and the new repo's skills appear automatically.
+
+### Automated daily refresh
+
+The included GitHub Actions workflow (`.github/workflows/refresh-catalog.yml`) runs daily at 06:00 UTC, refreshes the catalog, commits any diff back to `main`. Manual trigger with `--force` / `--include-registry` toggles is available via "Run workflow".
 
 ---
 
@@ -255,11 +274,10 @@ To submit to MCP discovery registries:
 
 ## How it works under the hood
 
-1. **`skills-explorer/scripts/scan-skills.mjs`** walks every cloned repo, parses each `SKILL.md` frontmatter, and applies regex-based domain classification.
-2. **`scripts/build-catalog.mjs`** projects that into a compact `catalog.json` with upstream GitHub coordinates (owner/repo/branch/in-repo-path).
-3. **MCP server** loads the catalog at startup, runs Fuse.js fuzzy search in-memory, and uses the upstream coordinates to fetch raw `SKILL.md` content or recursively download skill folders via the GitHub Contents API on demand.
+1. **`scripts/build-catalog.mjs`** reads `sources.json`, hits the GitHub Trees API once per source, fetches each `SKILL.md` over `raw.githubusercontent.com` (with concurrency + per-repo SHA cache), parses YAML frontmatter, applies the shared regex-based domain classifier, and writes `data/catalog.json` (~5 MB).
+2. **MCP server** loads the catalog at startup, runs Fuse.js fuzzy search in-memory, and uses the upstream coordinates (owner/repo/branch/path) to fetch raw `SKILL.md` content or recursively download skill folders via the GitHub Contents API on demand.
 
-The catalog is small enough to ship in the npm tarball (~5 MB) so search has zero network latency.
+The catalog is small enough to ship in the npm tarball so `search_skills` has zero network latency. No local clones of any upstream repo are required at any stage.
 
 ---
 

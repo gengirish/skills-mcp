@@ -16,7 +16,7 @@
   "scripts": {
     "build:catalog": "node scripts/build-catalog.mjs",
     "build": "tsc -p tsconfig.json && node -e \"require('fs').chmodSync('dist/index.js', 0o755)\"",
-    "prepare": "npm run build:catalog && npm run build",
+    "prepare": "npm run build && node -e \"const fs=require('fs');if(!fs.existsSync('data/catalog.json'))console.error('NOTE: data/catalog.json missing; run npm run build:catalog')\"",
     "dev": "node --import tsx --watch src/index.ts",
     "inspect": "npx @modelcontextprotocol/inspector node dist/index.js",
     "start": "node dist/index.js",
@@ -53,6 +53,9 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
+    "gray-matter": "^4.0.3",
+    "p-limit": "^6.2.0",
+    "picomatch": "^4.0.4",
     "tsx": "^4.19.2",
     "typescript": "^5.7.0"
   }

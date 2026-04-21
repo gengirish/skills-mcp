@@ -1,0 +1,187 @@
+{
+  "$schema": "./sources.schema.json",
+  "sources": [
+    {
+      "key": "anthropic-skills",
+      "owner": "anthropics",
+      "repo": "skills",
+      "branch": null,
+      "label": "Anthropic Skills",
+      "tier": "Official",
+      "upstream": "https://github.com/anthropics/skills",
+      "include": ["skills/**/SKILL.md", "template/**/SKILL.md"]
+    },
+    {
+      "key": "awesome-cursor-skills",
+      "owner": "spencerpauly",
+      "repo": "awesome-cursor-skills",
+      "branch": null,
+      "label": "Awesome Cursor Skills",
+      "tier": "Cursor-native",
+      "upstream": "https://github.com/spencerpauly/awesome-cursor-skills",
+      "include": ["resources/**/SKILL.md"]
+    },
+    {
+      "key": "superpowers",
+      "owner": "obra",
+      "repo": "superpowers",
+      "branch": null,
+      "label": "Superpowers (Framework)",
+      "tier": "Framework",
+      "upstream": "https://github.com/obra/superpowers",
+      "include": ["skills/**/SKILL.md"]
+    },
+    {
+      "key": "superpowers-skills",
+      "owner": "obra",
+      "repo": "superpowers-skills",
+      "branch": null,
+      "label": "Superpowers Skills",
+      "tier": "Framework",
+      "upstream": "https://github.com/obra/superpowers-skills",
+      "include": ["skills/**/SKILL.md"]
+    },
+    {
+      "key": "superpowers-marketplace",
+      "owner": "obra",
+      "repo": "superpowers-marketplace",
+      "branch": null,
+      "label": "Superpowers Marketplace",
+      "tier": "Framework",
+      "upstream": "https://github.com/obra/superpowers-marketplace",
+      "include": ["**/SKILL.md"],
+      "note": "Marketplace manifest only; expected to contribute 0 SKILL.md files unless upstream changes."
+    },
+    {
+      "key": "antfu-skills",
+      "owner": "antfu",
+      "repo": "skills",
+      "branch": null,
+      "label": "Anthony Fu's Skills",
+      "tier": "Curated",
+      "upstream": "https://github.com/antfu/skills",
+      "include": ["skills/**/SKILL.md"]
+    },
+    {
+      "key": "terminalskills",
+      "owner": "TerminalSkills",
+      "repo": "skills",
+      "branch": null,
+      "label": "Terminal Skills",
+      "tier": "Cross-tool",
+      "upstream": "https://github.com/TerminalSkills/skills",
+      "include": ["skills/**/SKILL.md"]
+    },
+    {
+      "key": "awesome-claude-skills",
+      "owner": "ComposioHQ",
+      "repo": "awesome-claude-skills",
+      "branch": null,
+      "label": "Composio · awesome-claude-skills",
+      "tier": "Curated",
+      "upstream": "https://github.com/ComposioHQ/awesome-claude-skills",
+      "include": [
+        "composio-skills/**/SKILL.md",
+        "document-skills/**/SKILL.md",
+        "*/SKILL.md"
+      ]
+    },
+    {
+      "key": "alirezarezvani-claude-skills",
+      "owner": "alirezarezvani",
+      "repo": "claude-skills",
+      "branch": null,
+      "label": "Alireza Rezvani · claude-skills",
+      "tier": "Production teams",
+      "upstream": "https://github.com/alirezarezvani/claude-skills",
+      "include": ["**/SKILL.md"],
+      "exclude": ["node_modules/**", "eval-workspace/runs/**"]
+    },
+    {
+      "key": "wshobson-agents",
+      "owner": "wshobson",
+      "repo": "agents",
+      "branch": null,
+      "label": "wshobson · agents",
+      "tier": "Plugin marketplace",
+      "upstream": "https://github.com/wshobson/agents",
+      "include": ["plugins/**/SKILL.md"]
+    },
+    {
+      "key": "wshobson-commands",
+      "owner": "wshobson",
+      "repo": "commands",
+      "branch": null,
+      "label": "wshobson · commands",
+      "tier": "Plugin marketplace",
+      "upstream": "https://github.com/wshobson/commands",
+      "include": ["**/SKILL.md"],
+      "note": "Command-shaped, not skill-shaped; expected to contribute 0 unless upstream restructures."
+    },
+    {
+      "key": "heilcheng-awesome-agent-skills",
+      "owner": "heilcheng",
+      "repo": "awesome-agent-skills",
+      "branch": null,
+      "label": "Hailey Cheng · awesome-agent-skills",
+      "tier": "Curated",
+      "upstream": "https://github.com/heilcheng/awesome-agent-skills",
+      "include": ["**/SKILL.md"],
+      "note": "Curated discovery list (README-only); expected to contribute 0."
+    },
+    {
+      "key": "antigravity-awesome-skills",
+      "owner": "zebbern",
+      "repo": "antigravity-awesome-skills",
+      "branch": null,
+      "label": "Antigravity Awesome Skills",
+      "tier": "Mega bundle",
+      "upstream": "https://github.com/zebbern/antigravity-awesome-skills",
+      "include": ["plugins/**/SKILL.md", "skills/**/SKILL.md"]
+    },
+    {
+      "key": "awesome-agent-skills",
+      "owner": "VoltAgent",
+      "repo": "awesome-agent-skills",
+      "branch": null,
+      "label": "VoltAgent · awesome-agent-skills",
+      "tier": "Curated",
+      "upstream": "https://github.com/VoltAgent/awesome-agent-skills",
+      "include": ["**/SKILL.md"],
+      "note": "Curated index (README-only); expected to contribute 0."
+    },
+    {
+      "key": "awesome-claude-agents",
+      "owner": "vijaythecoder",
+      "repo": "awesome-claude-agents",
+      "branch": null,
+      "label": "vijaythecoder · awesome-claude-agents",
+      "tier": "Orchestrator",
+      "upstream": "https://github.com/vijaythecoder/awesome-claude-agents",
+      "include": ["**/SKILL.md"],
+      "note": "Agent-shaped (no SKILL.md); expected to contribute 0."
+    },
+    {
+      "key": "gmh5225-awesome-skills",
+      "owner": "gmh5225",
+      "repo": "awesome-skills",
+      "branch": null,
+      "label": "gmh5225 · awesome-skills",
+      "tier": "Curated",
+      "upstream": "https://github.com/gmh5225/awesome-skills",
+      "include": [".claude/skills/**/SKILL.md", "**/SKILL.md"]
+    },
+    {
+      "key": "claude-skill-registry",
+      "owner": "majiayu000",
+      "repo": "claude-skill-registry",
+      "branch": null,
+      "label": "Claude Skill Registry (Mega Aggregator)",
+      "tier": "Aggregator",
+      "upstream": "https://github.com/majiayu000/claude-skill-registry",
+      "include": ["**/SKILL.md"],
+      "skipByDefault": true,
+      "note": "227k+ entries; opt in with --include-registry. Tree API may return truncated."
+    }
+  ]
+}

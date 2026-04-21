@@ -3,3 +3,8 @@ dist
 *.log
 .env*
 .DS_Store
+
+# Per-repo SHA cache used by scripts/build-catalog.mjs.
+# Regenerated on every `npm run build:catalog` run; data/catalog.json is the
+# committed deliverable.
+.cache/
