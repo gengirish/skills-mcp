@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/gengirish-skills-mcp-badge.png)](https://mseep.ai/app/gengirish-skills-mcp)
+
 # skills-mcp
 
 > An MCP server that lets any AI agent **discover, search, and install ~7,000 agent skills** from across the GitHub ecosystem (Anthropic, Superpowers, wshobson, antigravity, Composio, antfu, TerminalSkills, and more).
