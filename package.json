@@ -1,6 +1,6 @@
 {
   "name": "@gengirish/skills-mcp",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "MCP server that lets any AI agent discover, search, and install agent skills from across the GitHub ecosystem (Anthropic, Superpowers, wshobson, antigravity, Composio, and ~7,000 more).",
   "type": "module",
   "bin": {
@@ -11,6 +11,7 @@
     "dist",
     "data/catalog.json",
     "README.md",
+    "CHANGELOG.md",
     "LICENSE"
   ],
   "scripts": {

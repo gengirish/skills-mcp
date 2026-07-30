@@ -8,3 +8,7 @@ dist
 # Regenerated on every `npm run build:catalog` run; data/catalog.json is the
 # committed deliverable.
 .cache/
+
+# Intermediate per-frame SVGs from `node scripts/make-demo.mjs --frames`.
+# Only the rendered demo.svg / demo.gif / demo.mp4 are committed.
+assets/.frames/

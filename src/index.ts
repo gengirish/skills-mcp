@@ -3,6 +3,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import path from "node:path";
+import { createRequire } from "node:module";
 import { loadCatalog, findById, rawUrl } from "./catalog.js";
 import { searchSkills, summarize } from "./search.js";
 import {
@@ -12,7 +13,11 @@ import {
   ensureSafeTarget,
 } from "./fetcher.js";
 
-const VERSION = "0.1.0";
+// Read from package.json rather than duplicated here: this string is reported
+// by catalog_stats and in the MCP handshake, and a hard-coded copy silently
+// drifts from the published version. Resolves from dist/ and from src/ alike.
+const VERSION: string = createRequire(import.meta.url)("../package.json")
+  .version;
 
 const server = new McpServer(
   { name: "skills-mcp", version: VERSION },

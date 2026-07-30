@@ -5,6 +5,29 @@
 [![npm version](https://img.shields.io/badge/npm-%40gengirish%2Fskills--mcp-cb3837)](https://www.npmjs.com/package/@gengirish/skills-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/gengirish/skills-mcp/main/assets/demo.svg"
+       alt="Terminal demo: the user asks their agent to find a Stripe skill and install it. The agent calls search_skills, gets 5 matches out of 6,998 indexed skills, fetches the SKILL.md, and installs it into ~/.cursor/skills/adding-stripe/."
+       width="820">
+</p>
+
+<p align="center">
+  <sub>Scripted terminal recreation — every result, count and path in it is real <code>skills-mcp</code> output.<br>
+  Also available as <a href="assets/demo.gif">GIF</a> and <a href="assets/demo.mp4">MP4</a>.</sub>
+</p>
+
+---
+
+## Why
+
+Agent skills — the `SKILL.md` packages that teach Cursor, Claude Code and friends how to do one
+specific job well — are scattered across a dozen unrelated GitHub repos. Anthropic publishes a
+handful. Superpowers, wshobson, antigravity, Composio, TerminalSkills and others publish thousands
+more. There is no index, no search, and no install path: you find a skill by already knowing which
+repo it lives in, then copy a folder by hand. **skills-mcp collapses that into one MCP server —
+6,998 skills from 11 repos, searchable from inside your editor and installable in a single tool
+call.**
+
 ---
 
 ## What it does
@@ -219,13 +242,40 @@ skills-mcp/
 │   ├── build-catalog.mjs   # GitHub-native catalog builder
 │   ├── classify.mjs        # shared domain classification rules
 │   ├── smoke-test.mjs      # JSON-RPC stdio smoke test
-│   └── test-install.mjs    # end-to-end install test
+│   ├── test-install.mjs    # end-to-end install test
+│   ├── make-demo.mjs       # README demo (animated SVG + GIF/MP4 frames)
+│   └── make-social.mjs     # 1280x640 social preview card
 ├── sources.json        # declarative list of upstream repos + globs
 ├── .cache/             # per-repo SHA-keyed cache (gitignored)
+├── assets/             # demo.svg / demo.gif / demo.mp4 / social-preview.*
 ├── data/
 │   └── catalog.json    # generated, ~5 MB (committed)
 └── dist/               # tsc output (published)
 ```
+
+### Regenerating the marketing assets
+
+Both generators are dependency-free and emit SVG:
+
+```bash
+node scripts/make-demo.mjs        # -> assets/demo.svg (animated, 20s loop)
+node scripts/make-social.mjs      # -> assets/social-preview.svg
+```
+
+`demo.svg` degrades gracefully: where CSS animation doesn't run, it renders the finished transcript
+instead of an empty window. To refresh the raster copies (needs `ffmpeg`):
+
+```bash
+node scripts/make-demo.mjs --frames                                  # assets/.frames/*.svg
+npx @resvg/resvg-js-cli assets/social-preview.svg assets/social-preview.png
+# rasterise .frames to PNG, then:
+ffmpeg -framerate 10 -i png/f%04d.png -i palette.png \
+  -lavfi "[0:v]mpdecimate=hi=200:lo=100:frac=0.005[d];[d][1:v]paletteuse=dither=none:diff_mode=rectangle" \
+  -vsync vfr -loop 0 -final_delay 450 assets/demo.gif
+```
+
+The `mpdecimate` + `-vsync vfr` pass collapses the static holds into single long frames — it takes
+the GIF from ~4 MB to ~316 KB with no visible change.
 
 ### Refreshing the catalog
 
