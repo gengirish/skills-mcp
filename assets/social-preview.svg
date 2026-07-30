@@ -21,7 +21,7 @@
 <rect width="1280" height="5" fill="url(#rule)"/>
 <circle cx="91" cy="114" r="7" fill="#7EE787"/>
 <text x="110" y="122" font-family="Consolas, ui-monospace, SFMono-Regular, Menlo, 'Liberation Mono', monospace" font-size="25" fill="#8B949E" letter-spacing="0.5">skills-mcp</text>
-<text x="84" y="252" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Inter, Helvetica, Arial, sans-serif" font-size="86" font-weight="700" fill="#E6EDF3" letter-spacing="-2">7,000 agent skills.</text>
+<text x="84" y="252" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Inter, Helvetica, Arial, sans-serif" font-size="86" font-weight="700" fill="#E6EDF3" letter-spacing="-2">9,000+ agent skills.</text>
 <text x="84" y="356" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Inter, Helvetica, Arial, sans-serif" font-size="86" font-weight="700" fill="#7EE787" letter-spacing="-2">One MCP server.</text>
 <text x="84" y="424" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Inter, Helvetica, Arial, sans-serif" font-size="27" fill="#8B949E">Search, preview and install skills from 11 source repos —</text>
 <text x="84" y="464" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Inter, Helvetica, Arial, sans-serif" font-size="27" fill="#8B949E">in Cursor, Claude Code, Cline, Windsurf, or any MCP client.</text>
@@ -32,8 +32,8 @@
 <text x="1196" y="282" text-anchor="end" font-family="Consolas, ui-monospace, SFMono-Regular, Menlo, 'Liberation Mono', monospace" font-size="19" fill="#39424E">wshobson/agents</text>
 <text x="1196" y="316" text-anchor="end" font-family="Consolas, ui-monospace, SFMono-Regular, Menlo, 'Liberation Mono', monospace" font-size="19" fill="#39424E">spencerpauly/awesome-cursor-skills</text>
 <text x="1196" y="350" text-anchor="end" font-family="Consolas, ui-monospace, SFMono-Regular, Menlo, 'Liberation Mono', monospace" font-size="19" fill="#39424E">obra/superpowers-skills</text>
-<text x="1196" y="384" text-anchor="end" font-family="Consolas, ui-monospace, SFMono-Regular, Menlo, 'Liberation Mono', monospace" font-size="19" fill="#39424E">anthropics/skills</text>
-<text x="1196" y="418" text-anchor="end" font-family="Consolas, ui-monospace, SFMono-Regular, Menlo, 'Liberation Mono', monospace" font-size="19" fill="#39424E">antfu/skills</text>
+<text x="1196" y="384" text-anchor="end" font-family="Consolas, ui-monospace, SFMono-Regular, Menlo, 'Liberation Mono', monospace" font-size="19" fill="#39424E">antfu/skills</text>
+<text x="1196" y="418" text-anchor="end" font-family="Consolas, ui-monospace, SFMono-Regular, Menlo, 'Liberation Mono', monospace" font-size="19" fill="#39424E">anthropics/skills</text>
 <text x="1196" y="452" text-anchor="end" font-family="Consolas, ui-monospace, SFMono-Regular, Menlo, 'Liberation Mono', monospace" font-size="19" fill="#39424E">+ 2 more</text>
 <g><rect x="84" y="512" width="322.8" height="44" rx="10" fill="#161B22" stroke="#21262D"/><text x="101.0" y="541.56" font-family="Consolas, ui-monospace, SFMono-Regular, Menlo, 'Liberation Mono', monospace" font-size="21" fill="#79C0FF">npx @gengirish/skills-mcp</text></g>
 <g><rect x="420.75" y="512" width="184.2" height="44" rx="10" fill="#161B22" stroke="#21262D"/><text x="437.8" y="541.56" font-family="Consolas, ui-monospace, SFMono-Regular, Menlo, 'Liberation Mono', monospace" font-size="21" fill="#D2A8FF">search_skills</text></g>

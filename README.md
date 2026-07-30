@@ -1,13 +1,13 @@
 # skills-mcp
 
-> An MCP server that lets any AI agent **discover, search, and install ~7,000 agent skills** from across the GitHub ecosystem (Anthropic, Superpowers, wshobson, antigravity, Composio, antfu, TerminalSkills, and more).
+> An MCP server that lets any AI agent **discover, search, and install 9,000+ agent skills** from across the GitHub ecosystem (Anthropic, Superpowers, wshobson, antigravity, Composio, antfu, TerminalSkills, and more).
 
 [![npm version](https://img.shields.io/badge/npm-%40gengirish%2Fskills--mcp-cb3837)](https://www.npmjs.com/package/@gengirish/skills-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/gengirish/skills-mcp/main/assets/demo.svg"
-       alt="Terminal demo: the user asks their agent to find a Stripe skill and install it. The agent calls search_skills, gets 5 matches out of 6,998 indexed skills, fetches the SKILL.md, and installs it into ~/.cursor/skills/adding-stripe/."
+       alt="Terminal demo: the user asks their agent to find a Stripe skill and install it. The agent calls search_skills, gets 5 matches out of 9,238 indexed skills, fetches the SKILL.md, and installs it into ~/.cursor/skills/adding-stripe/."
        width="820">
 </p>
 
@@ -25,7 +25,7 @@ specific job well — are scattered across a dozen unrelated GitHub repos. Anthr
 handful. Superpowers, wshobson, antigravity, Composio, TerminalSkills and others publish thousands
 more. There is no index, no search, and no install path: you find a skill by already knowing which
 repo it lives in, then copy a folder by hand. **skills-mcp collapses that into one MCP server —
-6,998 skills from 11 repos, searchable from inside your editor and installable in a single tool
+9,238 skills from 11 repos, searchable from inside your editor and installable in a single tool
 call.**
 
 ---
@@ -52,11 +52,14 @@ Plus a resource (`skills://catalog`) exposing the full JSON index.
 
 | | |
 |---|---|
-| **Skills indexed** | 6,998 |
+| **Skills indexed** | 9,238 |
 | **Source repositories** | 11 |
 | **Logical domains** | 20 (testing, security, devops, ai-ml, frontend, backend, data, marketing, docs, …) |
-| **Top domain** | AI/ML/LLM (3,923 skills) |
-| **Top repo** | antigravity-awesome-skills (4,293 skills) |
+| **Top domain** | AI/ML/LLM (6,930 skills) |
+| **Top repo** | antigravity-awesome-skills (6,225 skills) |
+
+Counts are from the catalog build on 2026-07-30 and grow with the daily refresh — `catalog_stats`
+always reports the live figure.
 
 The catalog is built **directly from upstream GitHub repos** (no local clones needed) by `scripts/build-catalog.mjs` and shipped inside the npm package — so `search_skills` has zero network latency. `get_skill` and `install_skill` fetch live from GitHub on demand.
 
@@ -191,15 +194,15 @@ The agent will call the appropriate tool and act on the results.
 
 | Repo | Skills | Tier |
 |---|---:|---|
-| [zebbern/antigravity-awesome-skills](https://github.com/zebbern/antigravity-awesome-skills) | 4,293 | Mega bundle |
-| [TerminalSkills/skills](https://github.com/TerminalSkills/skills) | 998 | Cross-tool |
+| [zebbern/antigravity-awesome-skills](https://github.com/zebbern/antigravity-awesome-skills) | 6,225 | Mega bundle |
+| [TerminalSkills/skills](https://github.com/TerminalSkills/skills) | 1,016 | Cross-tool |
 | [ComposioHQ/awesome-claude-skills](https://github.com/ComposioHQ/awesome-claude-skills) | 864 | Curated |
-| [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills) | 540 | Production teams |
-| [wshobson/agents](https://github.com/wshobson/agents) | 151 | Plugin marketplace |
-| [spencerpauly/awesome-cursor-skills](https://github.com/spencerpauly/awesome-cursor-skills) | 64 | Cursor-native |
+| [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills) | 798 | Production teams |
+| [wshobson/agents](https://github.com/wshobson/agents) | 180 | Plugin marketplace |
+| [spencerpauly/awesome-cursor-skills](https://github.com/spencerpauly/awesome-cursor-skills) | 65 | Cursor-native |
 | [obra/superpowers-skills](https://github.com/obra/superpowers-skills) | 31 | Framework |
+| [antfu/skills](https://github.com/antfu/skills) | 19 | Curated |
 | [anthropics/skills](https://github.com/anthropics/skills) | 18 | Official |
-| [antfu/skills](https://github.com/antfu/skills) | 17 | Curated |
 | [obra/superpowers](https://github.com/obra/superpowers) | 14 | Framework |
 | [gmh5225/awesome-skills](https://github.com/gmh5225/awesome-skills) | 8 | Curated |
 

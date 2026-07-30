@@ -18,6 +18,26 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ASSETS = path.resolve(__dirname, "../assets");
 
+// Everything countable on the card comes from the catalog, so the daily
+// refresh can't leave the headline claiming a number we've outgrown.
+const CATALOG = JSON.parse(
+  fs.readFileSync(path.resolve(__dirname, "../data/catalog.json"), "utf8")
+);
+const HEADLINE_COUNT = `${Math.floor(
+  CATALOG.totals.skills / 1000
+).toLocaleString("en-US")},000+`;
+const REPO_COUNT = CATALOG.totals.repos;
+
+/** Upstream repos, busiest first, as owner/name. */
+const REPO_SLUGS = (() => {
+  const n = new Map();
+  for (const s of CATALOG.skills) {
+    const slug = s.upstream.replace(/^https:\/\/github\.com\//, "");
+    n.set(slug, (n.get(slug) ?? 0) + 1);
+  }
+  return [...n.entries()].sort((a, b) => b[1] - a[1]).map(([slug]) => slug);
+})();
+
 const W = 1280;
 const H = 640;
 const PAD = 84;
@@ -101,7 +121,7 @@ parts.push(
     PAD + 168
   }" font-family="${SANS}" font-size="86" font-weight="700" fill="${
     C.text
-  }" letter-spacing="-2">7,000 agent skills.</text>`,
+  }" letter-spacing="-2">${HEADLINE_COUNT} agent skills.</text>`,
   `<text x="${PAD}" y="${
     PAD + 272
   }" font-family="${SANS}" font-size="86" font-weight="700" fill="${
@@ -113,24 +133,21 @@ parts.push(
 parts.push(
   `<text x="${PAD}" y="${
     PAD + 340
-  }" font-family="${SANS}" font-size="27" fill="${C.dim}">Search, preview and install skills from 11 source repos —</text>`,
+  }" font-family="${SANS}" font-size="27" fill="${
+    C.dim
+  }">Search, preview and install skills from ${REPO_COUNT} source repos —</text>`,
   `<text x="${PAD}" y="${
     PAD + 380
   }" font-family="${SANS}" font-size="27" fill="${C.dim}">in Cursor, Claude Code, Cline, Windsurf, or any MCP client.</text>`
 );
 
 // --- indexed repos, low-contrast texture down the right edge --------------
+const SHOWN = 9;
 const REPOS = [
-  "zebbern/antigravity-awesome-skills",
-  "TerminalSkills/skills",
-  "ComposioHQ/awesome-claude-skills",
-  "alirezarezvani/claude-skills",
-  "wshobson/agents",
-  "spencerpauly/awesome-cursor-skills",
-  "obra/superpowers-skills",
-  "anthropics/skills",
-  "antfu/skills",
-  "+ 2 more",
+  ...REPO_SLUGS.slice(0, SHOWN),
+  ...(REPO_SLUGS.length > SHOWN
+    ? [`+ ${REPO_SLUGS.length - SHOWN} more`]
+    : []),
 ];
 REPOS.forEach((r, i) => {
   parts.push(
@@ -164,7 +181,7 @@ parts.push(
 );
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-<title>skills-mcp — 7,000 agent skills. One MCP server.</title>
+<title>skills-mcp — ${HEADLINE_COUNT} agent skills. One MCP server.</title>
 ${parts.join("\n")}
 </svg>
 `;

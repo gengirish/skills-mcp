@@ -25,7 +25,7 @@ without a major bump.
     `custom` target).
   - `catalog_stats` — versions, catalog generation time, totals.
 - **`skills://catalog` resource** exposing the full JSON index.
-- **6,998 skills indexed across 11 source repositories**, classified into 20
+- **9,238 skills indexed across 11 source repositories**, classified into 20
   domains by the shared ruleset in `scripts/classify.mjs`.
 - **Daily catalog refresh** via GitHub Actions (`.github/workflows/refresh-catalog.yml`),
   with manual `--force` / `--include-registry` toggles.

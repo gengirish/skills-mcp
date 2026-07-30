@@ -6,7 +6,7 @@
  *
  * The transcript below is a scripted recreation, but every figure in it comes
  * from a real run against the shipped catalog (see scripts/smoke-test.mjs):
- *   - 6,998 indexed skills          -> data/catalog.json totals
+ *   - the indexed-skill count       -> read live from data/catalog.json below
  *   - the two Stripe hits + blurbs  -> search_skills({query:"stripe payments"})
  *   - 2,264 B SKILL.md, 1 file      -> the real upstream folder listing
  *
@@ -21,6 +21,13 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ASSETS = path.resolve(__dirname, "../assets");
+
+// Read the live total rather than hard-coding it. The daily refresh workflow
+// grows the catalog, and a baked-in number goes stale within days.
+const TOTALS = JSON.parse(
+  fs.readFileSync(path.resolve(__dirname, "../data/catalog.json"), "utf8")
+).totals;
+const SKILL_COUNT = TOTALS.skills.toLocaleString("en-US");
 
 // ---------------------------------------------------------------------------
 // Layout
@@ -85,7 +92,7 @@ const LINES = [
       ["Found ", "dim"],
       ["5", "bright"],
       [" matches across ", "dim"],
-      ["6,998", "bright"],
+      [SKILL_COUNT, "bright"],
       [" indexed skills", "dim"],
     ],
   },

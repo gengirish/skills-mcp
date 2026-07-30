@@ -19,13 +19,24 @@ import {
 const VERSION: string = createRequire(import.meta.url)("../package.json")
   .version;
 
+// Describe the catalog with its live size. The daily refresh grows it, so a
+// hard-coded "~7,000" understates what the agent actually has to work with.
+function catalogBlurb(): string {
+  try {
+    const { skills, repos } = loadCatalog().totals;
+    return `Index covers ${skills.toLocaleString("en-US")} skills across ${repos} repositories, including Anthropic, Superpowers, wshobson, antigravity-awesome-skills, Composio, antfu, and TerminalSkills. `;
+  } catch {
+    // Startup will fail with a clearer message in main(); don't mask it here.
+    return "";
+  }
+}
+
 const server = new McpServer(
   { name: "skills-mcp", version: VERSION },
   {
     instructions:
       "Discover, search, and install agent skills (SKILL.md packages) from across the GitHub ecosystem. " +
-      "Index covers ~7,000 skills from Anthropic, Superpowers, wshobson, antigravity-awesome-skills, " +
-      "Composio, antfu, TerminalSkills, and more. " +
+      catalogBlurb() +
       "Workflow: search_skills -> get_skill -> install_skill.",
   }
 );
