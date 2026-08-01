@@ -2,7 +2,8 @@
 
 > An MCP server that lets any AI agent **discover, search, and install 9,000+ agent skills** from across the GitHub ecosystem (Anthropic, Superpowers, wshobson, antigravity, Composio, antfu, TerminalSkills, and more).
 
-[![npm version](https://img.shields.io/badge/npm-%40gengirish%2Fskills--mcp-cb3837)](https://www.npmjs.com/package/@gengirish/skills-mcp)
+[![npm version](https://img.shields.io/npm/v/@gengirish/skills-mcp?color=cb3837&logo=npm)](https://www.npmjs.com/package/@gengirish/skills-mcp)
+[![skills indexed](https://img.shields.io/badge/skills%20indexed-9%2C238-7EE787)](#quick-stats)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 <p align="center">
@@ -66,6 +67,16 @@ The catalog is built **directly from upstream GitHub repos** (no local clones ne
 ---
 
 ## Installation
+
+Nothing to clone or build — `npx` pulls the package, catalog included, and runs it over stdio.
+Sanity-check it in one command before wiring it into an editor:
+
+```bash
+npx -y @gengirish/skills-mcp
+# [skills-mcp] v1.0.0 ready · 9238 skills · 11 repos
+```
+
+It then waits on stdin for JSON-RPC, which is what your client speaks. Ctrl-C to exit.
 
 ### Cursor
 
@@ -306,14 +317,41 @@ The included GitHub Actions workflow (`.github/workflows/refresh-catalog.yml`) r
 
 ## Publishing
 
-The package is set up for public npm publish.
+Published as [`@gengirish/skills-mcp`](https://www.npmjs.com/package/@gengirish/skills-mcp).
 
 ```bash
-# bump version
-npm version patch     # or minor / major
+npm version patch                 # or minor / major
+npm publish --access public       # runs prepublishOnly = build:catalog + build
+```
 
-# publish (this runs prepublishOnly = build:catalog + build)
-npm publish --access public
+`--access public` is required: npm defaults scoped packages to restricted.
+
+Two things that are easy to trip over:
+
+**The publish hook rebuilds the catalog.** `prepublishOnly` runs `build:catalog`, which needs
+`GITHUB_TOKEN` and takes 5–10 minutes. It also rewrites `data/catalog.json`, so expect a diff
+afterwards — usually just `generatedAt`/`elapsedSec` if the upstream repos haven't moved.
+
+To publish without paying for a second rebuild — after a failed publish, say — pack once and push
+the tarball. Publishing a tarball skips `prepublishOnly` entirely:
+
+```bash
+npm pack                                                    # uses the catalog already on disk
+npm publish gengirish-skills-mcp-1.0.0.tgz --access public
+```
+
+**npm requires 2FA to publish.** Without it you get a `403` that reads as though you failed a 2FA
+challenge, when the real state is that there's no second factor configured to challenge you with —
+so passing `--otp` can't help. Check with `npm profile get`; if it says `two-factor auth: disabled`,
+enable 2FA on npmjs.com first. With `auth-and-writes` set, every publish needs a fresh `--otp`, and
+`npm login` (browser flow) is the most reliable way to get a token that accepts one. The documented
+alternative is a granular access token with 2FA bypass, scoped **`@gengirish`** at the scope level —
+package-level won't work for a package that doesn't exist yet.
+
+Verify a release actually boots the way a client will spawn it:
+
+```bash
+npx -y @gengirish/skills-mcp     # should print: [skills-mcp] vX.Y.Z ready · N skills · M repos
 ```
 
 To submit to MCP discovery registries:
