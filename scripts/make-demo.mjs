@@ -22,12 +22,17 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ASSETS = path.resolve(__dirname, "../assets");
 
-// Read the live total rather than hard-coding it. The daily refresh workflow
-// grows the catalog, and a baked-in number goes stale within days.
+// Read the live total rather than hard-coding it, then round it down to the
+// nearest thousand. The daily refresh moves the exact figure constantly, and
+// this number is baked into committed binaries (demo.gif / demo.mp4) that cost
+// minutes to regenerate -- so the rounded form is the one that stays true.
+// Prose and tables, which are cheap to update, keep the exact count.
 const TOTALS = JSON.parse(
   fs.readFileSync(path.resolve(__dirname, "../data/catalog.json"), "utf8")
 ).totals;
-const SKILL_COUNT = TOTALS.skills.toLocaleString("en-US");
+const SKILL_COUNT = `${Math.floor(TOTALS.skills / 1000).toLocaleString(
+  "en-US"
+)},000+`;
 
 // ---------------------------------------------------------------------------
 // Layout

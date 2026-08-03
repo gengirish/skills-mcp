@@ -3,12 +3,12 @@
 > An MCP server that lets any AI agent **discover, search, and install 9,000+ agent skills** from across the GitHub ecosystem (Anthropic, Superpowers, wshobson, antigravity, Composio, antfu, TerminalSkills, and more).
 
 [![npm version](https://img.shields.io/npm/v/@gengirish/skills-mcp?color=cb3837&logo=npm)](https://www.npmjs.com/package/@gengirish/skills-mcp)
-[![skills indexed](https://img.shields.io/badge/skills%20indexed-9%2C238-7EE787)](#quick-stats)
+[![skills indexed](https://img.shields.io/badge/skills%20indexed-9%2C321-7EE787)](#quick-stats)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/gengirish/skills-mcp/main/assets/demo.svg"
-       alt="Terminal demo: the user asks their agent to find a Stripe skill and install it. The agent calls search_skills, gets 5 matches out of 9,238 indexed skills, fetches the SKILL.md, and installs it into ~/.cursor/skills/adding-stripe/."
+       alt="Terminal demo: the user asks their agent to find a Stripe skill and install it. The agent calls search_skills, gets 5 matches out of the full catalog, fetches the SKILL.md, and installs it into ~/.cursor/skills/adding-stripe/."
        width="820">
 </p>
 
@@ -26,7 +26,7 @@ specific job well — are scattered across a dozen unrelated GitHub repos. Anthr
 handful. Superpowers, wshobson, antigravity, Composio, TerminalSkills and others publish thousands
 more. There is no index, no search, and no install path: you find a skill by already knowing which
 repo it lives in, then copy a folder by hand. **skills-mcp collapses that into one MCP server —
-9,238 skills from 11 repos, searchable from inside your editor and installable in a single tool
+9,321 skills from 11 repos, searchable from inside your editor and installable in a single tool
 call.**
 
 ---
@@ -53,13 +53,13 @@ Plus a resource (`skills://catalog`) exposing the full JSON index.
 
 | | |
 |---|---|
-| **Skills indexed** | 9,238 |
+| **Skills indexed** | 9,321 |
 | **Source repositories** | 11 |
 | **Logical domains** | 20 (testing, security, devops, ai-ml, frontend, backend, data, marketing, docs, …) |
-| **Top domain** | AI/ML/LLM (6,930 skills) |
-| **Top repo** | antigravity-awesome-skills (6,225 skills) |
+| **Top domain** | AI/ML/LLM (6,991 skills) |
+| **Top repo** | antigravity-awesome-skills (6,308 skills) |
 
-Counts are from the catalog build on 2026-07-30 and grow with the daily refresh — `catalog_stats`
+Counts are from the catalog build on 2026-08-03 and grow with the daily refresh — `catalog_stats`
 always reports the live figure.
 
 The catalog is built **directly from upstream GitHub repos** (no local clones needed) by `scripts/build-catalog.mjs` and shipped inside the npm package — so `search_skills` has zero network latency. `get_skill` and `install_skill` fetch live from GitHub on demand.
@@ -68,15 +68,21 @@ The catalog is built **directly from upstream GitHub repos** (no local clones ne
 
 ## Installation
 
-Nothing to clone or build — `npx` pulls the package, catalog included, and runs it over stdio.
-Sanity-check it in one command before wiring it into an editor:
+Install it once, globally. Every config below then points at the `skills-mcp` binary:
 
 ```bash
-npx -y @gengirish/skills-mcp
-# [skills-mcp] v1.0.0 ready · 9238 skills · 11 repos
+npm i -g @gengirish/skills-mcp
+skills-mcp
+# [skills-mcp] v1.0.1 ready · 9321 skills · 11 repos
 ```
 
 It then waits on stdin for JSON-RPC, which is what your client speaks. Ctrl-C to exit.
+
+> **Why not `npx -y @gengirish/skills-mcp`?** It works, but `npx` re-resolves the package on
+> *every* launch — measured at **~13s** to reach the ready banner versus **~0.5s** for the
+> installed binary. Several MCP clients give a server less than that to complete the handshake and
+> will report the server as failed to connect. Use `npx` only for a one-off try; install globally
+> for anything you actually use.
 
 ### Cursor
 
@@ -86,8 +92,7 @@ Edit `~/.cursor/mcp.json` (or per-project `.cursor/mcp.json`):
 {
   "mcpServers": {
     "skills": {
-      "command": "npx",
-      "args": ["-y", "@gengirish/skills-mcp"]
+      "command": "skills-mcp"
     }
   }
 }
@@ -103,8 +108,7 @@ Edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) o
 {
   "mcpServers": {
     "skills": {
-      "command": "npx",
-      "args": ["-y", "@gengirish/skills-mcp"]
+      "command": "skills-mcp"
     }
   }
 }
@@ -113,7 +117,18 @@ Edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) o
 ### Claude Code (CLI)
 
 ```bash
-claude mcp add skills npx -y @gengirish/skills-mcp
+claude mcp add skills -- skills-mcp          # macOS / Linux
+claude mcp add skills -- cmd /c skills-mcp   # Windows
+```
+
+The `--` is required. Without it `claude mcp add` parses the rest as its own flags and fails with
+`error: unknown option`. On Windows the `cmd /c` wrapper is needed because the global npm binary is
+a `.cmd` shim. Add `-s user` to register it for every project instead of just the current one.
+
+Check it took:
+
+```bash
+claude mcp list        # skills: ... - ✓ Connected
 ```
 
 ### Cline (VS Code extension)
@@ -123,8 +138,7 @@ In Cline's settings → MCP Servers, add:
 ```json
 {
   "skills": {
-    "command": "npx",
-    "args": ["-y", "@gengirish/skills-mcp"]
+    "command": "skills-mcp"
   }
 }
 ```
@@ -136,13 +150,12 @@ In `~/.continue/config.yaml`:
 ```yaml
 mcpServers:
   - name: skills
-    command: npx
-    args: ["-y", "@gengirish/skills-mcp"]
+    command: skills-mcp
 ```
 
 ### Windsurf / OpenCode / others
 
-Any MCP-compatible client: spawn the binary `npx -y @gengirish/skills-mcp` over stdio.
+Any MCP-compatible client: spawn `skills-mcp` over stdio.
 
 ### Optional: avoid GitHub rate limits
 
@@ -152,8 +165,7 @@ Any MCP-compatible client: spawn the binary `npx -y @gengirish/skills-mcp` over 
 {
   "mcpServers": {
     "skills": {
-      "command": "npx",
-      "args": ["-y", "@gengirish/skills-mcp"],
+      "command": "skills-mcp",
       "env": { "GITHUB_TOKEN": "ghp_xxxxxxxxxxxx" }
     }
   }
@@ -205,7 +217,7 @@ The agent will call the appropriate tool and act on the results.
 
 | Repo | Skills | Tier |
 |---|---:|---|
-| [zebbern/antigravity-awesome-skills](https://github.com/zebbern/antigravity-awesome-skills) | 6,225 | Mega bundle |
+| [zebbern/antigravity-awesome-skills](https://github.com/zebbern/antigravity-awesome-skills) | 6,308 | Mega bundle |
 | [TerminalSkills/skills](https://github.com/TerminalSkills/skills) | 1,016 | Cross-tool |
 | [ComposioHQ/awesome-claude-skills](https://github.com/ComposioHQ/awesome-claude-skills) | 864 | Curated |
 | [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills) | 798 | Production teams |

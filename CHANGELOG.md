@@ -5,6 +5,31 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] — 2026-08-03
+
+Startup and install-docs fixes. No API changes.
+
+### Fixed
+
+- **Documented install command never worked.** `claude mcp add skills npx -y @gengirish/skills-mcp`
+  fails with `error: unknown option '-y'` — `claude mcp add` parses the flag as its own. It needs a
+  `--` separator: `claude mcp add skills -- skills-mcp`. On Windows the global binary is a `.cmd`
+  shim, so it needs `-- cmd /c skills-mcp`.
+- **`npx` is too slow to survive a client's connect timeout.** Measured ~13s to reach the ready
+  banner via `npx -y` versus ~0.5s for a globally installed binary — the difference is `npx`
+  re-resolving the package on every launch. Clients report this as "failed to connect" even though
+  the server is fine. All install docs now lead with `npm i -g` and point at the `skills-mcp`
+  binary.
+
+### Changed
+
+- **~30% faster cold start** (≈750ms → ≈525ms). The MCP handshake and the startup banner used to
+  parse the full 6.7 MB catalog just to report totals. The builder now also emits a 120-byte
+  `data/catalog-meta.json`, and the full catalog is parsed lazily on the first tool call that
+  actually needs it. `catalog_stats` is served from the sidecar too.
+- A missing catalog still fails loudly at startup — the existence check runs without parsing.
+  Installs predating the sidecar fall back to reading totals from the catalog itself.
+
 ## [1.0.0] — 2026-07-30
 
 First stable release. The tool surface below is now covered by semver: tool names,
@@ -54,5 +79,6 @@ without a major bump.
 
 Initial release.
 
+[1.0.1]: https://github.com/gengirish/skills-mcp/releases/tag/v1.0.1
 [1.0.0]: https://github.com/gengirish/skills-mcp/releases/tag/v1.0.0
 [0.1.0]: https://github.com/gengirish/skills-mcp/releases/tag/v0.1.0

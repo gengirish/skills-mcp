@@ -4,7 +4,13 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { z } from "zod";
 import path from "node:path";
 import { createRequire } from "node:module";
-import { loadCatalog, findById, rawUrl } from "./catalog.js";
+import {
+  loadCatalog,
+  loadMeta,
+  assertCatalogPresent,
+  findById,
+  rawUrl,
+} from "./catalog.js";
 import { searchSkills, summarize } from "./search.js";
 import {
   fetchSkillContent,
@@ -21,9 +27,11 @@ const VERSION: string = createRequire(import.meta.url)("../package.json")
 
 // Describe the catalog with its live size. The daily refresh grows it, so a
 // hard-coded "~7,000" understates what the agent actually has to work with.
+// Reads the small sidecar, not the full catalog: this runs before the
+// transport connects, and clients give the handshake a limited window.
 function catalogBlurb(): string {
   try {
-    const { skills, repos } = loadCatalog().totals;
+    const { skills, repos } = loadMeta().totals;
     return `Index covers ${skills.toLocaleString("en-US")} skills across ${repos} repositories, including Anthropic, Superpowers, wshobson, antigravity-awesome-skills, Composio, antfu, and TerminalSkills. `;
   } catch {
     // Startup will fail with a clearer message in main(); don't mask it here.
@@ -343,7 +351,9 @@ server.tool(
   "Get top-level statistics about the skills catalog: total skills, repos, generation time.",
   {},
   async () => {
-    const cat = loadCatalog();
+    // Served from the sidecar: stats are exactly what it holds, so answering
+    // this shouldn't force the full catalog into memory.
+    const meta = loadMeta();
     return {
       content: [
         {
@@ -351,9 +361,9 @@ server.tool(
           text: JSON.stringify(
             {
               version: VERSION,
-              generatedAt: cat.generatedAt,
-              totals: cat.totals,
-              domains: cat.domains.length,
+              generatedAt: meta.generatedAt,
+              totals: meta.totals,
+              domains: meta.domains,
             },
             null,
             2
@@ -410,10 +420,13 @@ server.resource(
 // Boot
 // ---------------------------------------------------------------------------
 async function main() {
-  // Pre-load catalog so failures surface at startup.
-  const cat = loadCatalog();
+  // Check the catalog is there without parsing it -- a missing file should
+  // still fail loudly at startup, but 6.7 MB of JSON only gets parsed when a
+  // tool actually needs it, which keeps the connect handshake fast.
+  assertCatalogPresent();
+  const { totals } = loadMeta();
   process.stderr.write(
-    `[skills-mcp] v${VERSION} ready · ${cat.totals.skills} skills · ${cat.totals.repos} repos\n`
+    `[skills-mcp] v${VERSION} ready · ${totals.skills} skills · ${totals.repos} repos\n`
   );
 
   const transport = new StdioServerTransport();

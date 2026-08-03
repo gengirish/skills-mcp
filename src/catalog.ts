@@ -33,21 +33,57 @@ export type Catalog = {
   skills: CatalogSkill[];
 };
 
+export type CatalogMeta = {
+  generatedAt: string;
+  totals: { skills: number; repos: number };
+  domains: number;
+};
+
 let cache: Catalog | null = null;
+let metaCache: CatalogMeta | null = null;
+
+/** dist/catalog.js -> data/ is one level up; src/catalog.ts -> two. */
+function dataFile(name: string): string | undefined {
+  const here = path.dirname(fileURLToPath(import.meta.url));
+  return [
+    path.resolve(here, `../data/${name}`),
+    path.resolve(here, `../../data/${name}`),
+  ].find((p) => fs.existsSync(p));
+}
+
+/** Throws if the catalog is missing, without paying to parse it. */
+export function assertCatalogPresent(): void {
+  if (!dataFile("catalog.json")) {
+    throw new Error("catalog.json not found next to the installed package.");
+  }
+}
+
+/**
+ * Headline numbers only, read from a small sidecar so the MCP handshake
+ * doesn't have to parse the full 6.7 MB catalog. Falls back to the catalog
+ * itself for installs predating the sidecar.
+ */
+export function loadMeta(): CatalogMeta {
+  if (metaCache) return metaCache;
+  const found = dataFile("catalog-meta.json");
+  if (found) {
+    metaCache = JSON.parse(fs.readFileSync(found, "utf8")) as CatalogMeta;
+  } else {
+    const cat = loadCatalog();
+    metaCache = {
+      generatedAt: cat.generatedAt,
+      totals: cat.totals,
+      domains: cat.domains.length,
+    };
+  }
+  return metaCache;
+}
 
 export function loadCatalog(): Catalog {
   if (cache) return cache;
-  const here = path.dirname(fileURLToPath(import.meta.url));
-  // dist/catalog.ts compiles to dist/catalog.js -> data is one level up
-  const candidates = [
-    path.resolve(here, "../data/catalog.json"),
-    path.resolve(here, "../../data/catalog.json"),
-  ];
-  const found = candidates.find((p) => fs.existsSync(p));
+  const found = dataFile("catalog.json");
   if (!found) {
-    throw new Error(
-      `catalog.json not found. Looked in:\n${candidates.join("\n")}`
-    );
+    throw new Error("catalog.json not found next to the installed package.");
   }
   cache = JSON.parse(fs.readFileSync(found, "utf8")) as Catalog;
   return cache;

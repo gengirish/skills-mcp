@@ -43,6 +43,7 @@ const ROOT = path.resolve(__dirname, "..");
 const SOURCES_FILE = path.resolve(ROOT, "sources.json");
 const CACHE_DIR = path.resolve(ROOT, ".cache");
 const OUT_FILE = path.resolve(ROOT, "data", "catalog.json");
+const META_FILE = path.resolve(ROOT, "data", "catalog-meta.json");
 
 const ARGS = parseArgs(process.argv.slice(2));
 
@@ -473,6 +474,26 @@ async function main() {
     await fsp.writeFile(OUT_FILE, JSON.stringify(catalog));
     const sizeMb = (fs.statSync(OUT_FILE).size / 1024 / 1024).toFixed(2);
     console.log(`Wrote ${path.relative(process.cwd(), OUT_FILE)} (${sizeMb} MB)`);
+
+    // Sidecar with just the headline numbers. The server reports these during
+    // the MCP handshake, and parsing 6.7 MB to answer "how many skills?" put
+    // ~170ms on every cold start -- enough to matter against a client's
+    // connect timeout. The full catalog now loads on first tool call instead.
+    await fsp.writeFile(
+      META_FILE,
+      JSON.stringify(
+        {
+          generatedAt: catalog.generatedAt,
+          totals: catalog.totals,
+          domains: catalog.domains.length,
+        },
+        null,
+        2
+      ) + "\n"
+    );
+    console.log(
+      `Wrote ${path.relative(process.cwd(), META_FILE)} (${fs.statSync(META_FILE).size} B)`
+    );
   } else {
     console.log("(--no-write set; catalog not persisted)");
   }
