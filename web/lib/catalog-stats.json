@@ -1,0 +1,197 @@
+{
+  "skills": 9323,
+  "repos": 11,
+  "domains": 20,
+  "generatedAt": "2026-08-18T06:31:53.676Z",
+  "syncedAt": "2026-08-18T10:31:10.452Z",
+  "publishedVersion": "1.0.0",
+  "topRepo": {
+    "slug": "zebbern/antigravity-awesome-skills",
+    "count": 6308
+  },
+  "topDomain": {
+    "label": "AI / ML / LLM",
+    "count": 6992
+  },
+  "repoList": [
+    {
+      "slug": "zebbern/antigravity-awesome-skills",
+      "label": "Antigravity Awesome Skills",
+      "tier": "Mega bundle",
+      "upstream": "https://github.com/zebbern/antigravity-awesome-skills",
+      "count": 6308
+    },
+    {
+      "slug": "TerminalSkills/skills",
+      "label": "Terminal Skills",
+      "tier": "Cross-tool",
+      "upstream": "https://github.com/TerminalSkills/skills",
+      "count": 1016
+    },
+    {
+      "slug": "ComposioHQ/awesome-claude-skills",
+      "label": "Composio · awesome-claude-skills",
+      "tier": "Curated",
+      "upstream": "https://github.com/ComposioHQ/awesome-claude-skills",
+      "count": 864
+    },
+    {
+      "slug": "alirezarezvani/claude-skills",
+      "label": "Alireza Rezvani · claude-skills",
+      "tier": "Production teams",
+      "upstream": "https://github.com/alirezarezvani/claude-skills",
+      "count": 798
+    },
+    {
+      "slug": "wshobson/agents",
+      "label": "wshobson · agents",
+      "tier": "Plugin marketplace",
+      "upstream": "https://github.com/wshobson/agents",
+      "count": 180
+    },
+    {
+      "slug": "spencerpauly/awesome-cursor-skills",
+      "label": "Awesome Cursor Skills",
+      "tier": "Cursor-native",
+      "upstream": "https://github.com/spencerpauly/awesome-cursor-skills",
+      "count": 65
+    },
+    {
+      "slug": "obra/superpowers-skills",
+      "label": "Superpowers Skills",
+      "tier": "Framework",
+      "upstream": "https://github.com/obra/superpowers-skills",
+      "count": 31
+    },
+    {
+      "slug": "anthropics/skills",
+      "label": "Anthropic Skills",
+      "tier": "Official",
+      "upstream": "https://github.com/anthropics/skills",
+      "count": 20
+    },
+    {
+      "slug": "antfu/skills",
+      "label": "Anthony Fu's Skills",
+      "tier": "Curated",
+      "upstream": "https://github.com/antfu/skills",
+      "count": 19
+    },
+    {
+      "slug": "obra/superpowers",
+      "label": "Superpowers (Framework)",
+      "tier": "Framework",
+      "upstream": "https://github.com/obra/superpowers",
+      "count": 14
+    },
+    {
+      "slug": "gmh5225/awesome-skills",
+      "label": "gmh5225 · awesome-skills",
+      "tier": "Curated",
+      "upstream": "https://github.com/gmh5225/awesome-skills",
+      "count": 8
+    }
+  ],
+  "domainList": [
+    {
+      "id": "ai-ml",
+      "label": "AI / ML / LLM",
+      "count": 6992
+    },
+    {
+      "id": "automation",
+      "label": "Automation & Integrations",
+      "count": 2002
+    },
+    {
+      "id": "devops",
+      "label": "DevOps & Infra",
+      "count": 1436
+    },
+    {
+      "id": "backend",
+      "label": "Backend & APIs",
+      "count": 1357
+    },
+    {
+      "id": "design",
+      "label": "Design & Creative",
+      "count": 1146
+    },
+    {
+      "id": "performance",
+      "label": "Performance",
+      "count": 1084
+    },
+    {
+      "id": "marketing-content",
+      "label": "Marketing & Content",
+      "count": 947
+    },
+    {
+      "id": "testing",
+      "label": "Testing & QA",
+      "count": 827
+    },
+    {
+      "id": "frontend",
+      "label": "Frontend & UI",
+      "count": 821
+    },
+    {
+      "id": "security",
+      "label": "Security",
+      "count": 757
+    },
+    {
+      "id": "data",
+      "label": "Data & Databases",
+      "count": 691
+    },
+    {
+      "id": "business-pm",
+      "label": "Business & PM",
+      "count": 513
+    },
+    {
+      "id": "git-collab",
+      "label": "Git & Collaboration",
+      "count": 439
+    },
+    {
+      "id": "debugging",
+      "label": "Debugging",
+      "count": 405
+    },
+    {
+      "id": "documentation",
+      "label": "Documentation",
+      "count": 396
+    },
+    {
+      "id": "other",
+      "label": "Other",
+      "count": 373
+    },
+    {
+      "id": "documents",
+      "label": "Documents",
+      "count": 341
+    },
+    {
+      "id": "mobile",
+      "label": "Mobile",
+      "count": 289
+    },
+    {
+      "id": "meta-skills",
+      "label": "Meta (Skills & Cursor)",
+      "count": 69
+    },
+    {
+      "id": "blockchain",
+      "label": "Blockchain & Web3",
+      "count": 40
+    }
+  ]
+}

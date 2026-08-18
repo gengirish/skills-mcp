@@ -1,0 +1,175 @@
+@import "tailwindcss";
+
+/*
+ * Palette is deliberately identical to the demo recording and the social
+ * card generated in the skills-mcp repo, so the embedded terminal below the
+ * hero sits on the page rather than on top of it.
+ */
+@theme {
+  --color-bg: #0d1117;
+  --color-bg2: #11161f;
+  --color-bg3: #161b22;
+  --color-line: #21262d;
+  --color-line2: #30363d;
+  --color-bone: #e6edf3;
+  --color-muted: #8b949e;
+  --color-faint: #6e7681;
+  --color-green: #7ee787;
+  --color-blue: #79c0ff;
+  --color-purple: #d2a8ff;
+  --color-amber: #e3b341;
+
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+:root {
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Anchored sections shouldn't hide under the sticky navbar. */
+  scroll-padding-top: 5.5rem;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-bone);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-green) 28%, transparent);
+  color: var(--color-bone);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-green);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/*
+ * ─── Entrance animations ───
+ *
+ * The base state of every animated element is its FINAL state, and the
+ * animated variants are gated behind `.js`, which is set on <html>
+ * synchronously in <head>. Two things fall out of that:
+ *
+ *   - With JS off, or before hydration, the content is simply visible.
+ *     (Starting from opacity:0 in markup means a blank page until React
+ *     hydrates — bad for LCP, worse for anyone whose JS never arrives.)
+ *   - Because `.js` is applied before first paint, there's no flash of
+ *     visible content collapsing into the hidden start state.
+ */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Fires on load — used above the fold, where there's nothing to wait for. */
+.js .anim-up {
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0s);
+}
+
+/* Fires when scrolled into view — see components/RevealOnScroll.tsx. */
+.reveal {
+  opacity: 1;
+}
+
+.js .reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--d, 0s);
+}
+
+.js .reveal[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .anim-up {
+    animation: none;
+  }
+
+  /* Don't leave off-screen content stranded at opacity 0. */
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ─── Faint grid, used behind the hero ─── */
+.grid-bg {
+  background-image:
+    linear-gradient(to right, var(--color-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 30%, transparent 75%);
+}
+
+/* ─── Marquee for the repo ticker ─── */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* Track holds the list twice; -50% lands exactly on the seam. */
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee 42s linear infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+.marquee-mask {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+}
