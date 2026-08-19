@@ -3,8 +3,11 @@
 > An MCP server that lets any AI agent **discover, search, and install 9,000+ agent skills** from across the GitHub ecosystem (Anthropic, Superpowers, wshobson, antigravity, Composio, antfu, TerminalSkills, and more).
 
 [![npm version](https://img.shields.io/npm/v/@gengirish/skills-mcp?color=cb3837&logo=npm)](https://www.npmjs.com/package/@gengirish/skills-mcp)
-[![skills indexed](https://img.shields.io/badge/skills%20indexed-9%2C321-7EE787)](#quick-stats)
+[![skills indexed](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fgengirish%2Fskills-mcp%2Fmain%2Fdata%2Fcatalog-meta.json&query=%24.totals.skills&label=skills%20indexed&color=7EE787)](https://skillsmcp.intelliforge.tech/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![website](https://img.shields.io/badge/website-skillsmcp.intelliforge.tech-1F6FEB)](https://skillsmcp.intelliforge.tech/)
+
+**[skillsmcp.intelliforge.tech](https://skillsmcp.intelliforge.tech/)** — browse the catalog and the install steps in the browser.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/gengirish/skills-mcp/main/assets/demo.svg"
@@ -26,7 +29,7 @@ specific job well — are scattered across a dozen unrelated GitHub repos. Anthr
 handful. Superpowers, wshobson, antigravity, Composio, TerminalSkills and others publish thousands
 more. There is no index, no search, and no install path: you find a skill by already knowing which
 repo it lives in, then copy a folder by hand. **skills-mcp collapses that into one MCP server —
-9,321 skills from 11 repos, searchable from inside your editor and installable in a single tool
+9,000+ skills from 11 repos, searchable from inside your editor and installable in a single tool
 call.**
 
 ---
@@ -53,7 +56,7 @@ Plus a resource (`skills://catalog`) exposing the full JSON index.
 
 | | |
 |---|---|
-| **Skills indexed** | 9,321 |
+| **Skills indexed** | ![skills indexed](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fgengirish%2Fskills-mcp%2Fmain%2Fdata%2Fcatalog-meta.json&query=%24.totals.skills&label=skills%20indexed&color=7EE787) |
 | **Source repositories** | 11 |
 | **Logical domains** | 20 (testing, security, devops, ai-ml, frontend, backend, data, marketing, docs, …) |
 | **Top domain** | AI/ML/LLM (6,991 skills) |
@@ -73,7 +76,7 @@ Install it once, globally. Every config below then points at the `skills-mcp` bi
 ```bash
 npm i -g @gengirish/skills-mcp
 skills-mcp
-# [skills-mcp] v1.0.1 ready · 9321 skills · 11 repos
+# [skills-mcp] v1.0.1 ready · 9324 skills · 11 repos
 ```
 
 It then waits on stdin for JSON-RPC, which is what your client speaks. Ctrl-C to exit.

@@ -1,9 +1,9 @@
 {
-  "skills": 9323,
+  "skills": 9324,
   "repos": 11,
   "domains": 20,
-  "generatedAt": "2026-08-18T06:31:53.676Z",
-  "syncedAt": "2026-08-18T10:51:41.077Z",
+  "generatedAt": "2026-08-19T06:33:19.324Z",
+  "syncedAt": "2026-08-19T07:28:47.348Z",
   "publishedVersion": "1.0.0",
   "topRepo": {
     "slug": "zebbern/antigravity-awesome-skills",
@@ -11,7 +11,7 @@
   },
   "topDomain": {
     "label": "AI / ML / LLM",
-    "count": 6992
+    "count": 6993
   },
   "repoList": [
     {
@@ -47,7 +47,7 @@
       "label": "wshobson · agents",
       "tier": "Plugin marketplace",
       "upstream": "https://github.com/wshobson/agents",
-      "count": 180
+      "count": 181
     },
     {
       "slug": "spencerpauly/awesome-cursor-skills",
@@ -96,12 +96,12 @@
     {
       "id": "ai-ml",
       "label": "AI / ML / LLM",
-      "count": 6992
+      "count": 6993
     },
     {
       "id": "automation",
       "label": "Automation & Integrations",
-      "count": 2002
+      "count": 2003
     },
     {
       "id": "devops",
@@ -111,7 +111,7 @@
     {
       "id": "backend",
       "label": "Backend & APIs",
-      "count": 1357
+      "count": 1356
     },
     {
       "id": "design",
@@ -121,12 +121,12 @@
     {
       "id": "performance",
       "label": "Performance",
-      "count": 1084
+      "count": 1085
     },
     {
       "id": "marketing-content",
       "label": "Marketing & Content",
-      "count": 947
+      "count": 948
     },
     {
       "id": "testing",
@@ -156,7 +156,7 @@
     {
       "id": "git-collab",
       "label": "Git & Collaboration",
-      "count": 439
+      "count": 440
     },
     {
       "id": "debugging",
@@ -166,7 +166,7 @@
     {
       "id": "documentation",
       "label": "Documentation",
-      "count": 396
+      "count": 397
     },
     {
       "id": "other",
@@ -176,7 +176,7 @@
     {
       "id": "documents",
       "label": "Documents",
-      "count": 341
+      "count": 340
     },
     {
       "id": "mobile",
